@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            z-index: 0;
+        }
+
+        .box {
+            transition-timing-function: ease-in-out;
+            transition-duration: 1s;
+            margin-top: 300px;
+            margin-left: 20px;
+            background-color: white;
+            height: 60px;
+            width: 30px;
+        }
+
+        .ground {
+            z-index: 4;
+            position: relative;
+            top: -269px;
+            background-color: white;
+            width: 100%;
+            height: 1px;
+        }
+
+        .j {
+            position: relative;
+            font-size: 20px;
+            left: 600px;
+            border: 5px solid rgb(148, 148, 148);
+            top: -200px;
+            background-color: white;
+            height: 50px;
+            width: 100px;
+        }
+
+        .j1 {
+            position: relative;
+            font-size: 20px;
+            left: 600px;
+            border: 5px solid rgb(148, 148, 148);
+            top: -200px;
+            background-color: white;
+            height: 50px;
+            width: 100px;
+        }
+
+        .obs1 {
+            scale: 1.5;
+            z-index: 4;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 15px solid red;
+            position: relative;
+            top: -243px;
+            left: 1350px;
+            width: 0px;
+            height: 0px;
+
+        }
+
+        .obs2 {
+            scale: 1.5;
+            z-index: 4;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 15px solid red;
+            position: relative;
+            top: -258px;
+            left: 1323px;
+            width: 0px;
+            height: 0px;
+
+        }
+
+        .obs3 {
+            scale: 1.5;
+            z-index: 4;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 15px solid red;
+            position: relative;
+            top: -273px;
+            left: 1297px;
+            width: 0px;
+            height: 0px;
+
+        }
+
+        .dino {
+            z-index: 4;
+            transition-timing-function: ease-in-out;
+            transition-duration: 1s;
+            position: relative;
+            top: 200px;
+            left: -190px;
+            scale: 0.2;
+            animation-name: run;
+            animation-timing-function: linear;
+            animation-duration: .5s;
+            animation-iteration-count: infinite;
+            animation-play-state: running;
+        }
+
+        .mainobs {
+            position: relative;
+            width: 100%;
+            top: 0px;
+            left: 0px;
+        }
+
+
+
+
+        .ind {
+
+            z-index: -1;
+        }
+
+        .black {
+            z-index: 9;
+            border: 1px solid white;
+            border-bottom: 0px solid transparent;
+
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            text-align: center;
+            color: white;
+            position: relative;
+            left: 701px;
+            top: -500px;
+            width: 657px;
+            height: 230px;
+            background-color: black;
+        }
+
+        h2 {
+            margin-left: 100px;
+        }
+
+        .score {
+            margin-left: 0px;
+        }
+
+        .hscore {
+            margin-left: 0px;
+
+        }
+    </style>
+
+</head>
+
+<body bgcolor="black" style="overflow: hidden;">
+
+
+
+    <!-- <img src="../run1.png" class="dino1" id="p" style="top: 501px;">
+                <img src="../run2.png" class="dino2" id="p" style="top: 501px; left: -500px;"> -->
+    <img class="dino" src="../pngwing.com-removebg-preview.png" alt="" style="top: 1px;" id="p">
+
+    <div class="mainobs" id="obs">
+        <div class="obs1" id="obs1"></div>
+        <div class="obs2" id="obs2"></div>
+        <div class="obs3" id="obs3"></div>
+
+
+    </div>
+
+    <div class="ground" id="g"></div>
+    <div class="main">
+
+        <button class="j" id="j" onclick="jump()">Start</button>
+        <button class="j1" id="r" onclick="retry()">Retry</button>
+        <div class="black">
+            <h2>Score:</h2>
+            <h2 class="score" id="score">00</h2>
+            <h2>High Score:</h2>
+            <h2 class="hscore" id="hscore">00</h2>
+        </div>
+        <div class="main">
+        </div>
+
+
+
+
+
+
+
+        <script>
+            var speed
+            var scorego = true
+            var game
+            var scorestopper = true
+            var fpush = true
+            var end = 65
+            var str = 31
+            let val = true
+            var start = true;
+            var p = 0;
+            var r = 0;
+            var acscore = 0;
+            var achscore = 0;
+            var canjump = true
+            var redisplay = false
+
+
+            let score = document.getElementById("score")
+            let hscore = document.getElementById("hscore")
+            let obs1 = document.getElementById("obs1")
+            let obs2 = document.getElementById("obs2")
+            let obs3 = document.getElementById("obs3")
+            let ground = document.getElementById("g")
+            let obs = document.getElementById("obs");
+            let jumpbtn = document.getElementById("j");
+            let player = document.getElementById('p');
+            let rebtn = document.getElementById("r")
+
+            rebtn.style.display = `none`
+            function jump() {
+
+                player.style.transitionDuration = "85ms"
+
+
+                if (player.style.top == "0px" && canjump == true) {
+                    if (jumpbtn.innerHTML == "Start") {
+                        jumpbtn.innerHTML = "Jump!"
+                        game = true
+                        scorego = true
+                    }
+
+                    p = -70
+                    player.style.position = "relative"
+                    player.style.top = "-100px"
+                    if (val == true) {
+                        m()
+
+                        val = false
+                    }
+
+
+
+                }
+                if (scorestopper == true && game == true) {
+                    setInterval(
+                        function e() {
+                            if (scorego == true) {
+                                acscore += 1
+                                score.innerHTML = acscore
+                            }
+                        }, 100
+                    )
+                    scorestopper = false
+                }
+
+            }
+
+
+            // if (fpush == true) {
+            //     setInterval(
+            //         function () {
+            //             if (fpush == true) {
+            //                 obs.style.left = `${r--}px`
+            //             }
+            //         }
+            //     )
+            // }
+
+            var second = 10
+            var me = true
+            var speed1
+            var speed2
+            var speed3
+            var speed4
+            setInterval(
+                function () {
+                    if (speed == 0) {
+                        speed1 = false
+                        speed2 = false
+                        speed3 = false
+                        speed4 = false
+                    }
+                    else if (speed == 1) {
+                        speed1 = true
+                        speed2 = false
+                        speed3 = false
+                        speed4 = false
+                    }
+                    else if (speed == 2) {
+                        speed1 = true
+                        speed2 = true
+                        speed3 = false
+                        speed4 = false
+                    }
+                    else if (speed == 3) {
+                        speed1 = true
+                        speed2 = true
+                        speed3 = true
+                        speed4 = false
+                    }
+                    else if (speed == 4) {
+                        speed1 = true
+                        speed2 = true
+                        speed3 = true
+                        speed4 = true
+                    }
+                }
+            )
+            setInterval(
+                function () {
+                    if (speed1 == true) {
+                        obs.style.left = `${r--}px`
+                    }
+                }, 1
+            )
+            setInterval(
+                function () {
+                    if (speed2 == true) {
+                        obs.style.left = `${r--}px`
+                    }
+                }, 1
+            )
+            setInterval(
+                function () {
+                    if (speed3 == true) {
+                        obs.style.left = `${r--}px`
+                    }
+                }, 1
+            )
+            setInterval(
+                function () {
+                    if (speed4 == true) {
+                        obs.style.left = `${r--}px`
+                    }
+                }, 1
+            )
+            function m() {
+
+                setInterval(
+                    function () {
+                        if (game == true) {
+                            if (redisplay == false) {
+                                canjump = true
+                            }
+
+                            if (start == true) {
+                                obs.style.left = `${r--}px`
+                            }
+                            else if (me == true) {
+                                scorego = false
+                                me = false
+                                speed = 0
+                                rebtn.style.display = "inline"
+                            }
+                        }
+                    }, 1
+                )
+            }
+
+
+
+
+            setInterval(
+                function () {
+
+                    if (p < 1) {
+                        player.style.top = `${p++}px`
+                    }
+                }, 10
+
+            )
+
+
+
+            let ok = true;
+            let obsnum = 3;
+            let obspass = 1;
+            let randomizer;
+            setInterval(
+                function () {
+                    randomizer = Math.ceil(Math.random() * -601)
+                    if (obsnum == 1) {
+                        obs1.style.display = "block"
+                        obs2.style.display = "none"
+                        obs3.style.display = "none"
+                        ground.style.top = "-239px"
+                    }
+                    else if (obsnum == 2) {
+                        obs1.style.display = "block"
+                        obs2.style.display = "block"
+                        obs3.style.display = "none"
+                        ground.style.top = "-255px"
+                    }
+                    else if (obsnum == 3) {
+                        obs1.style.display = "block"
+                        obs2.style.display = "block"
+                        obs3.style.display = "block"
+                        ground.style.top = "-269px"
+
+                    }
+
+                    if (r < -1400) {
+                        obsnum = Math.ceil(Math.random() * 3);
+                        obsend = false
+                        obspass += 1
+                        console.log(obsnum)
+                        r = randomizer
+                        console.log(r)
+
+
+                    }
+                    if (obsnum == 1) {
+                        for (let num = -1329; num < -1280; num++) {
+                            if (obs.style.left == `${num}px` && player.style.top == "0px") {
+                                start = false
+                            }
+
+                        }
+                    }
+                    else if (obsnum == 2) {
+                        for (let num = -1335; num < -1253; num++) {
+                            if (obs.style.left == `${num}px` && player.style.top == "0px") {
+                                start = false
+                            }
+
+                        }
+                    }
+                    else if (obsnum == 3) {
+                        for (let num = -1335; num < -1225; num++) {
+                            if (obs.style.left == `${num}px` && player.style.top == "0px") {
+                                start = false
+                            }
+                        }
+                    }
+                }
+
+            )
+
+
+
+            setInterval(
+                function () {
+                    if (obspass == 15) {
+                        ok = null
+                    }
+
+                    if (obspass == 5) {
+                        speed = 1
+                    }
+                    else if (obspass == 20) {
+                        speed = 2
+                    }
+                    else if (obspass == 40) {
+                        speed = 3
+                    }
+                    else if (obspass == 60) {
+                        speed = 4
+                    }
+                    // if (obspass % 5 == 0 && ok == true) {
+                    //     m()
+                    //     console.log("hi")
+                    //     ok = false
+                    // }
+                    // if (obspass % 5 != 0 && ok == false) {
+                    //     ok = true
+                    // }
+                }
+            )
+
+            function retry() {
+                // clearInterval(e())
+
+                if (acscore > achscore) {
+                    achscore = acscore
+                    hscore.innerHTML = achscore
+                }
+                jumpbtn.innerHTML = "Start"
+
+                redisplay = false
+                acscore = 0
+                score.innerHTML = acscore
+
+                r = 0
+                p = 0
+                speed = 0
+                rebtn.style.display = "none"
+                start = true
+                obs.style.left = `${r}px`
+                obspass = 1
+                obsnum = 3
+                game = false
+                me = true
+
+            }
+        </script>
+
+</html>
